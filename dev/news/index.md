@@ -1,5 +1,21 @@
 # Changelog
 
+## pillar 1.11.1.9033
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#883](https://github.com/r-lib/pillar/issues/883)).
+
+### Continuous integration
+
+- Run coverage checks after pkgdown push.
+
+### Uncategorized
+
+- Feat(ci): Render `README.md` and `index.md` in CI
+  (cynkra/cynkratemplate#118).
+
 ## pillar 1.11.1.9032
 
 ### Documentation
