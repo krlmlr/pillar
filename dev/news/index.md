@@ -1,5 +1,12 @@
 # Changelog
 
+## pillar 1.11.1.9034
+
+### Chore
+
+- Auto-update from GitHub Actions
+  ([\#884](https://github.com/r-lib/pillar/issues/884)).
+
 ## pillar 1.11.1.9033
 
 ### Chore
