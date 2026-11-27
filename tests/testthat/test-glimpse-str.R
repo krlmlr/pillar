@@ -122,3 +122,58 @@ test_that("str_rewrite() converts old-style str() output", {
   expect_equal(str_rewrite(" num 5", 5), "num 5")
   expect_equal(str_rewrite(" vctrs_vc [1:3] 1, 2, 3", NULL), " vctrs_vc [1:3] 1, 2, 3")
 })
+
+test_that("str_glimpse() walks only the levels and components that str() shows", {
+  deep <- list(1)
+  for (i in 1:20000) {
+    deep <- list(deep)
+  }
+  expect_equal(
+    capture.output(str_glimpse(list(a = "1:2", d = deep), max.level = 3)),
+    c(
+      "List of 2",
+      ' $ a: chr "1:2"',
+      " $ d: List of 1",
+      "  ..$ : List of 1",
+      "  .. ..$ : List of 1"
+    )
+  )
+
+  wide <- replicate(3000, list(t = "12:00", u = list(v = 1)), simplify = FALSE)
+  out <- capture.output(str_glimpse(wide, max.level = 3, list.len = 2))
+  expect_equal(out[1:4], c("List of 3000", " $ : List of 2", '  ..$ t: chr "12:00"', "  ..$ u: List of 1"))
+  expect_equal(out[[length(out)]], "  [list output truncated]")
+})
+
+test_that("str_glimpse() supports a custom indent.str", {
+  x <- list(a = 1, b = list(c = 2, `d:e` = list(1)))
+  expect_equal(
+    capture.output(str_glimpse(x, indent.str = "  |")),
+    c(
+      "List of 2",
+      "  |$ a: num 1",
+      "  |$ b: List of 2",
+      "  | ..$ c  : num 2",
+      "  | ..$ d:e: List of 1",
+      "  | .. ..$ : num 1"
+    )
+  )
+})
+
+test_that("str_glimpse() looks up names on the level of the line", {
+  x <- list(a = list(`b: chr "x` = 1), b = "x:y")
+  expect_equal(
+    capture.output(str_glimpse(x)),
+    c(
+      "List of 2",
+      " $ a: List of 1",
+      '  ..$ b: chr "x: num 1',
+      ' $ b: chr "x:y"'
+    )
+  )
+})
+
+test_that("str_rewrite() errors are not fatal for str_glimpse()", {
+  local_mocked_bindings(str_rewrite = function(...) stop("oops"))
+  expect_equal(capture.output(str_glimpse(list(a = 1))), capture.output(str(list(a = 1))))
+})
