@@ -183,11 +183,6 @@
       $ h <list> 1, 2, NA
       $ i <list> [1, <2, 3>], [<4, 5, 6>~
     Code
-      # non-tibble
-      glimpse(5)
-    Output
-       num 5
-    Code
       trees2 <- as_unknown_rows(trees)
       glimpse(trees2, width = 70L)
     Output
@@ -215,6 +210,13 @@
       Columns: 2
       $ cyl  <dbl> 6, 4, 8
       $ data <list> [<tbl[11 x 11]>], [<tbl[7 x 11]>], [<tbl[14 x 11]>]
+
+# output test for glimpse() with non-tibble
+
+    Code
+      glimpse(5)
+    Output
+      num 5
 
 # format_glimpse_1() handles commas correctly
 

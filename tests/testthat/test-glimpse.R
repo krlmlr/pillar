@@ -85,9 +85,6 @@ test_that("output test for glimpse()", {
       glimpse(as_tbl(df_all))
     )
 
-    "non-tibble"
-    glimpse(5)
-
     trees2 <- as_unknown_rows(trees)
     glimpse(trees2, width = 70L)
 
@@ -99,6 +96,14 @@ test_that("output test for glimpse()", {
     data <- map(data, as_tbl)
     nested_mtcars_tbl <- tibble::tibble(cyl, data)
     glimpse(nested_mtcars_tbl, width = 70L)
+  })
+})
+
+test_that("output test for glimpse() with non-tibble", {
+  skip_if(getRversion() < "4.7.0", "str() output changed in R 4.7.0")
+
+  expect_snapshot({
+    glimpse(5)
   })
 })
 
